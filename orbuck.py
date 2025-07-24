@@ -54,8 +54,9 @@ def orbucksmaxxing(itemsCount, current_value=0, current_index=0, current_cost=0)
     else:
         return min_cost, best_count
 
-st.title("ORBucks Maximization")
+st.title("OR-Bucks Maximization")
 
+st.write("Ever want to find the cheapest OR-Bucks purchase combinations to spend every last bit of your OR-Bucks on bundles? Here's a tool for you!")
 # Default items (value in ORBucks, cost in USD)
 items = [(6250, 44.99), (2750, 21.99), (1000, 8.99)]
 
@@ -63,12 +64,12 @@ for i in range(len(items)):
     st.write(f"Item {i+1}:", items[i])
 
 # Other inputs
-bundleCost = st.number_input("Bundle Cost (in ORBucks)", min_value=1, value=1800)
-original = st.number_input("Original Value (in ORBucks)", min_value=0, value=2000)
-maxPayment = st.number_input("Max Payment (in IRL Currency)", min_value=1, value=500)
-sale = st.number_input("Sale %", min_value=0, max_value=100, value=25)
-currencyName = st.text_input("Currency Name", value="Euro")
+bundleCost = st.number_input("Bundle Cost (OR-Bucks)", min_value=1, value=1800)
+original = st.number_input("Original Amount of OR-Bucks", min_value=0, value=2000)
+currencyName = st.text_input("IRL LOCAL Currency Name", value="Euro")
 conversionFromUSD = st.number_input(f"Conversion Rate from USD to {currencyName}", min_value=0.0, value=0.85)
+maxPayment = st.number_input("Max Payment (IRL LOCAL Currency)", min_value=1, value=500)
+sale = st.number_input("Sale %", min_value=0, max_value=100, value=25)
 vat = st.number_input("VAT % (optional)", min_value=0, max_value=100, value=0)
 
 convMaxPayment = (( (maxPayment / conversionFromUSD)/ ((100 - sale) / 100)) / (1 + vat / 100))
