@@ -1,5 +1,5 @@
 import streamlit as st
-
+import plotly.graph_objects as go
 # Title of the app
 st.title('OR Farming Calculator')
 
@@ -24,37 +24,39 @@ suppliesCost = {"Soil": 4, "Fertilizer": 6, "Planter": 32, "Wooden Sprinkler": 2
 # Dictionary to hold checked crops and their attributes
 checkedCrops = {}
 # Hoe type selection
-st.header("Tool Configuration:")
-col = st.columns([1, 3])
-with col[0]:
-    st.write("")
-    st.write("")
+
+container1 = st.container(border=True)
+container1.header("Tool Configuration:")
+
+col1, col2 = container1.columns([1, 3])
+with col1:
+    st.write("") 
     st.write("Harvesting Hoe Type:")
-    st.write("")
-    st.write("")
-    st.write("")
+    st.write("") 
     st.write("Sowing Level:")
-    st.write("")
-    st.write("")
-    st.write("")
+    st.write("") 
     st.write("Yielding Level:")
-with col[1]:
-    hoeType = st.selectbox("", list(hoeTypes.keys()), index=len(hoeTypes) - 1, key='hoeType')
-    sowingLevel = st.selectbox("", ["None", 1, 2, 3], index=0, key='sowingLevel')
-    yieldingLevel = st.selectbox("", ["None", 1, 2, 3], index=0, key='yieldingLevel')
+
+with col2:
+    hoeType = st.selectbox("Select Hoe Type:", list(hoeTypes.keys()), index=len(hoeTypes) - 1, key='hoeType')
+    sowingLevel = st.selectbox("Select Sowing Level:", ["None", 1, 2, 3], index=0, key='sowingLevel')
+    yieldingLevel = st.selectbox("Select Yielding Level:", ["None", 1, 2, 3], index=0, key='yieldingLevel')
+
 
 cropChance = {"Default":{"1-Star":90-hoeTypes[hoeType],"2-Star":10+hoeTypes[hoeType],"3-Star":0},"Soil":{"1-Star":0,"2-Star":90-hoeTypes[hoeType],"3-Star":10+hoeTypes[hoeType]},"Gold Crop":1}
-# Create a tab for crop selection
-st.header("Select Your Crops:")
-col = st.columns([1, 3])
-with col[0]:
+
+
+container2 = st.container(border=True)
+container2.header("Select Your Crops:")
+col1, col2 = container2.columns([1, 3])
+with col1:
     for cropName in crops.keys():
         checkbox = st.checkbox(cropName, key=f'checkbox_{cropName}')
         if checkbox:
-            checkedCrops[cropName] = {}  # Initialize entry for the crop
+            checkedCrops[cropName] = {}
 
 # Create tabs for each checked crop
-with col[1]:
+with col2:
     if checkedCrops:
         cropTabs = st.tabs(checkedCrops.keys())
 
@@ -66,7 +68,6 @@ with col[1]:
                 planterTabs = st.tabs(planterTypes.keys())
                 for planterName, planterTab in zip(planterTypes.keys(), planterTabs):
                     with planterTab:
-                        # Initialize a dictionary for each planter type
                         if planterName not in checkedCrops[cropName]:
                             checkedCrops[cropName][planterName] = {}
 
@@ -77,7 +78,7 @@ with col[1]:
                             value=0, 
                             key=f'planter_{cropName}_{planterName}'
                         )
-                        checkedCrops[cropName][planterName]['Planters'] = planters
+                        checkedCrops[cropName][planterName]['Planters'] = planters * planterTypes[planterName]
 
                         soil = st.number_input(
                             f'Soil for {cropName} [in units of {planterName} ({planterTypes[planterName]})]', 
@@ -86,7 +87,7 @@ with col[1]:
                             value=0, 
                             key=f'soil_{cropName}_{planterName}'
                         )
-                        checkedCrops[cropName][planterName]['Soil'] = soil
+                        checkedCrops[cropName][planterName]['Soil'] = soil * planterTypes[planterName]
 
                         fertilizer = st.number_input(
                             f'Fertilizer for {cropName} [in units of {planterName} ({planterTypes[planterName]})]', 
@@ -95,13 +96,22 @@ with col[1]:
                             value=0, 
                             key=f'fertilizer_{cropName}_{planterName}'
                         )
-                        checkedCrops[cropName][planterName]['Fertilizer'] = fertilizer
+                        checkedCrops[cropName][planterName]['Fertilizer'] = fertilizer * planterTypes[planterName]
+container3= st.container(border=True)
+container3.header("Miscellaneous:")
+col1, col2 = container3.columns([1, 3])
+with col1:
+    st.write("")
+    st.write("")
+    st.write("Harvests:")
+with col2:
+    harvests = st.number_input('Number of Seeds per Planter',  min_value=1, max_value=64,value=1, key=f'harvests')
 
 # Calculate button
 if st.button('Calculate'):
     if checkedCrops:
-        totalPrices=[]
-        totalCosts = []
+        results = {"Crops":[],"totalProfits":[],"totalPrices":[],"totalCosts":[]}
+        barCol=[]
         priceFormula=""
         costFormula = ""
         for cropName, attributes in checkedCrops.items():
@@ -111,9 +121,10 @@ if st.button('Calculate'):
                     soil = planterAttributes['Soil']
                     fertilizer = planterAttributes['Fertilizer']
                     costs = crops[cropName]['costs']
-                    
-                    totalCost = ((costs * planters * (1 - (enchantTypes["Sowing"][sowingLevel - 1]/100 if sowingLevel != "None" else 0))) + ((soil + 11) // 12 * suppliesCost["Soil"]) + (fertilizer * suppliesCost["Fertilizer"]))
-                    totalCosts.append(totalCost)
+                    results["Crops"].append(cropName)
+                    barCol.append(f"{cropName} {planterName}s")
+                    totalCost = harvests*((costs * planters * (1 - (enchantTypes["Sowing"][sowingLevel - 1]/100 if sowingLevel != "None" else 0))) + ((soil + 11) // 12 * suppliesCost["Soil"]) + (fertilizer * suppliesCost["Fertilizer"]))
+                    results["totalCosts"].append(totalCost)
                     
                      # Calculate income without soil
                     incomeWithoutSoil = (
@@ -129,43 +140,55 @@ if st.button('Calculate'):
                         soil
                     )
                     
-                    totalPrice= ((incomeWithoutSoil+incomeWithSoil)*(1-cropChance["Gold Crop"]/100) + (cropChance["Gold Crop"]/100 * crops[cropName]['price'][3] * planters) ) * (1 + (fertilizer/planters))
+                    totalPrice= ((incomeWithoutSoil+incomeWithSoil)*(1-cropChance["Gold Crop"]/100) + (cropChance["Gold Crop"]/100 * crops[cropName]['price'][3] * planters) ) * (1 + (fertilizer/planters)*harvests)
                     if yieldingLevel != "None":
                         totalPrice *= (1 + enchantTypes["Yielding"][yieldingLevel - 1]/100)
-                    totalPrices.append(totalPrice)
-                    costFormula += (
-                        f"Total Cost for {cropName} with {planters} {planterName} = \n\n"
-                        f"({costs} × {planters} - Seeds from Sowing {sowingLevel}) + \n"
-                        f"({((soil + 11) // 12) * suppliesCost['Soil']}) + \n"
-                        f"({fertilizer} × {suppliesCost['Fertilizer']}) = {totalCost} \n\n"
-                    )
-                    priceFormula += (
-                        f"Total Income for {cropName} with {planters} {planterName} = \n\n"
-                        f"  (((1-Star Chance% × {crops[cropName]['price'][0]} × ({planters} - {soil})) + \n"
-                        f"  (2-Star Chance% × {crops[cropName]['price'][1]} × ({planters} - {soil})) + \n\n"
-                        f"  (2-Star Chance% × {crops[cropName]['price'][1]} × {soil}) + \n"
-                        f"  (3-Star Chance% × {crops[cropName]['price'][2]} × {soil})) × 1-Gold Crop Chance% + \n\n"
-                        f"  (Gold Crop Chance% × {crops[cropName]['price'][3]} × {planters})) × \n\n"
-                        f"  (1 + Fertilizer Doubling%:({fertilizer / planters})) × (1 + Yielding %) \n\n"
-                        f"= Total Income: {totalPrice} \n\n"
-                    )
-            sumTotalCost = sum(totalCosts)
-            sumTotalPrice = sum(totalPrices)
+                    results["totalPrices"].append(totalPrice)
+                    results["totalProfits"].append(totalPrice-totalCost)
+            sumTotalCost = sum(results["totalCosts"])
+            sumTotalPrice = sum(results["totalPrices"])
         if sumTotalCost > 0:
+            
             st.header("Calculated Results:")
             st.success(f"Total Profit from Farm: {sumTotalPrice-sumTotalCost}")
             st.success(f"Total Income from All Crops: {sumTotalPrice}")
             st.success(f"Total Cost of Farm: {sumTotalCost}")
+
+            fig = go.Figure()
+            categories = ['Crops','totalProfits', 'totalPrices', 'totalCosts']
+            for category in categories[1:]:
+                fig.add_trace(go.Bar(
+                    name=category,
+                    x=barCol,
+                    y=results[category]
+                ))
+
+            # Update layout
+            fig.update_layout(
+                title='Financial Overview of Crops',
+                barmode='group',
+                xaxis_title='Crops',
+                yaxis_title='Amount (in Rubies)',
+                template='plotly'
+            )
+
+            # Streamlit app
+            st.title("Financial Overview of Crops")
+
+            st.plotly_chart(fig)
             st.write("Total Income for Each Crop:")
-            st.write("= (incomeWithoutSoil + incomeWithSoil + goldCrop) x (Fertilizer Doubling) x (Yielding Doubling)\n")
-            st.markdown(priceFormula)
+            st.markdown(
+                "= (((planter-soil)\\*(1-Star% \\* 1-Star\\$ + 2-Star% * 2-Star\\$) + (soil)\\*(2-Star% \\* 2-Star\\$ + 3-Star% \\* 3-Star\\$)) \\* !goldCrop% + goldCrop% \\* goldCrop\\$ \\* planters) \\* (Fertilizer Doubling) \\* (Yielding Doubling) \\* (harvests)"
+            )
             st.write("Total Costs for Each Crop:")
-            st.write("= (Base Cost × Planters) + (Rounded Soil Cost) + (Fertilizer Cost × Fertilizer)  \n")
-            st.markdown(costFormula)
+            st.markdown(
+                "= (Seed Cost \\* Planters) \\* 1-Sowing% + (Rounded Soil Cost) + (Fertilizer Cost \\* Fertilizer) \\* (harvests)"
+            )
             st.write("")
             st.header("Farm Configuration:")
-            st.write(f"You selected: {hoeType}")
-            st.write(checkedCrops)
+            st.write(f"You selected: {hoeType} Sowing: {sowingLevel} Yielding: {yieldingLevel}")
+            st.dataframe(checkedCrops)
+            st.dataframe(results)
         else:
             st.warning('Please select at least one planter.')
     else:
