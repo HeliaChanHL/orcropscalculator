@@ -149,13 +149,13 @@ def tab2Content():
                             if planterName not in checkedCrops[cropName]:
                                 checkedCrops[cropName][planterName] = {}
 
-                            planters = st.number_input(f'Number of {planterName} for {cropName}', min_value=0, max_value=10000, value=0, key=f'planter_{cropName}_{planterName}')
+                            planters = st.number_input(f'Number of {planterName} Setups for {cropName}', min_value=0, max_value=10000, value=0, key=f'planter_{cropName}_{planterName}')
                             checkedCrops[cropName][planterName]['Planters'] = planters
 
-                            soil = st.number_input(f'Soil for {cropName} [in units of {planterName} ({planterTypes[planterName]})]', min_value=0, max_value=planters, value=0, key=f'soil_{cropName}_{planterName}')
+                            soil = st.number_input(f'Number of Setups with Soil for {cropName} [in units of {planterName} ({planterTypes[planterName]})]', min_value=0, max_value=planters, value=0, key=f'soil_{cropName}_{planterName}')
                             checkedCrops[cropName][planterName]['Soil'] = soil
 
-                            fertilizer = st.number_input(f'Fertilizer for {cropName} [in units of {planterName} ({planterTypes[planterName]})]', min_value=0, max_value=planters, value=0, key=f'fertilizer_{cropName}_{planterName}')
+                            fertilizer = st.number_input(f'Number of Setups with Fertilizer for {cropName} [in units of {planterName} ({planterTypes[planterName]})]', min_value=0, max_value=planters, value=0, key=f'fertilizer_{cropName}_{planterName}')
                             checkedCrops[cropName][planterName]['Fertilizer'] = fertilizer
 
     container3 = st.container()
