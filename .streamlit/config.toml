@@ -1,0 +1,11 @@
+[server]
+headless = true
+
+[theme]
+primaryColor = "#E39700"
+backgroundColor = "#0E1117"       
+secondaryBackgroundColor = "#1A1E24" 
+textColor = "#FFFFFF"      
+
+[logger]
+level = "info"
