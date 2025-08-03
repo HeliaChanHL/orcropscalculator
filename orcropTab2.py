@@ -12,9 +12,6 @@ def tab1Content():
 
     with col2:
         # Select hoe type and store it in session state using on_change
-        st.session_state.hoeType="Netherite"
-        st.session_state.sowingLevel="None"
-        st.session_state.yieldingLevel="None"
         hoeType = st.selectbox(
             "Select Hoe Type:", 
             list(hoeTypes.keys()), 
@@ -90,17 +87,15 @@ def tab1Content():
     
 
 
-
     # Calculate button
     if st.button('Calculate (Double Click)'):
         if checkedCrops:
-            st.session_state.calc = False
             results = {"Crops": [], "totalProfits": [], "totalIncome": [], "totalCosts": []}
             results2 = {"Crops": [], "totalProfits": [], "totalIncome": [], "totalCosts": []}
             allCostBreakdown = []
             suppliesCount = {crop + " Seed": 0 for crop in crops.keys()}
             suppliesCount.update({"Soil": 0, "Fertilizer": 0, "Planter": 0, "Wooden Sprinkler": 0, "Iron Sprinkler": 0})
-
+            toggle=False
             for cropName, attributes in checkedCrops.items():
                 totalCropCost = 0
                 totalCropIncome = 0
@@ -110,6 +105,7 @@ def tab1Content():
                     fertilizer = planterAttributes['Fertilizer']
                     
                     if planters != 0:
+                        toggle=True
                         suppliesCount[cropName + " Seed"] += planterTypes[planterName] * harvests * planters 
                         suppliesCount["Soil"] += planterTypes[planterName] * harvests * soil
                         suppliesCount["Fertilizer"] += planterTypes[planterName] * harvests * fertilizer
@@ -141,6 +137,10 @@ def tab1Content():
             st.session_state.results2 = results2
             st.session_state.allCostBreakdown = allCostBreakdown
             st.session_state.suppliesCount = suppliesCount
+            if toggle:
+                st.session_state.calc = False
+            else:
+                st.warning('Please select at least one crop.')
 
         else:
             st.warning('Please select at least one crop.')
