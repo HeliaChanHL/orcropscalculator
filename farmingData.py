@@ -24,7 +24,7 @@ cropChance = {
 
 
 
-tab1Text = ["""
+tab1Text = """
 ### Explanation of Calculations
 
 #### Cost Calculation
@@ -65,4 +65,4 @@ tab1Text = ["""
 4. **Adjustments**:
    The total income is adjusted based on the amount of fertilizer used and any yielding enchantments (if applicable). Finally, it factors in the effectiveness of the planter type and multiplies by the number of harvests.
 
-"""]
+"""

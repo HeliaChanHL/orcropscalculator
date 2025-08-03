@@ -1,6 +1,6 @@
 import streamlit as st
 from farmingData import *
-def tab2Content():
+def tab1Content():
     checkedCrops = {}
     container1 = st.container()
     container1.header("Tool Configuration:")
@@ -89,15 +89,18 @@ def tab2Content():
 
 
     # Calculate button
-    if st.button('Calculate'):
+    if st.button('Calculate (Double Click)'):
         if checkedCrops:
+            st.session_state.calc = False
             results = {"Crops": [], "totalProfits": [], "totalIncome": [], "totalCosts": []}
-            barCol = []
+            results2 = {"Crops": [], "totalProfits": [], "totalIncome": [], "totalCosts": []}
             allCostBreakdown = []
             suppliesCount = {crop + " Seed": 0 for crop in crops.keys()}
             suppliesCount.update({"Soil": 0, "Fertilizer": 0, "Planter": 0, "Wooden Sprinkler": 0, "Iron Sprinkler": 0})
 
             for cropName, attributes in checkedCrops.items():
+                totalCropCost = 0
+                totalCropIncome = 0
                 for planterName, planterAttributes in attributes.items():
                     planters = planterAttributes['Planters']
                     soil = planterAttributes['Soil']
@@ -120,17 +123,22 @@ def tab2Content():
                         results["totalCosts"].append(totalCost)
                         results["totalIncome"].append(totalIncome)
                         results["totalProfits"].append(totalIncome - totalCost)
-                        barCol.append(f"{cropName} {planterName}s")
+                        totalCropCost += totalCost
+                        totalCropIncome += totalIncome
                         
                         allCostBreakdown.append(costBreakdown)
+                if totalCropCost!=0:  
+                    results2["Crops"].append(cropName)
+                    results2["totalCosts"].append(totalCropCost)
+                    results2["totalIncome"].append(totalCropIncome)
+                    results2["totalProfits"].append(totalCropIncome - totalCropCost)
 
             st.session_state.checkedCrops=checkedCrops
             st.session_state.results = results
-            st.session_state.barCol = barCol
+            st.session_state.results2 = results2
             st.session_state.allCostBreakdown = allCostBreakdown
             st.session_state.suppliesCount = suppliesCount
 
-            st.session_state.active_tab = 'Tab 3'
         else:
             st.warning('Please select at least one crop.')
 def calculateCost(cropName, planterAttributes, planters, soil, fertilizer, planterName,harvests,sowingLevel):
