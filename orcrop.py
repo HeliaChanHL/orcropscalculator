@@ -5,6 +5,7 @@ import streamlit as st
 
 # Title of the app
 st.title('OR Farming Calculator')
+st.write("OR-Finishes Web Application")
 custom_css = """
 <style>
 .st-emotion-cache-fw8xvw { /* stElementContainer */
@@ -58,4 +59,5 @@ with footer_container:
         st.write("Copyright © Amelia Freeman")
     
     with col3:
+
         st.markdown("[Join OR-Finishes Discord](https://discord.gg/or-finishes)")
