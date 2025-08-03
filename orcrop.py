@@ -7,7 +7,7 @@ import streamlit as st
 st.title('OR Farming Calculator')
 custom_css = """
 <style>
-.st-emotion-cache-z8vbw2 { /* stElementContainer */
+.st-emotion-cache-fw8xvw { /* stElementContainer */
   width: 100%;
   max-width: 100%;
 }
