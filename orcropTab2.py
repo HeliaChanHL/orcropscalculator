@@ -12,6 +12,9 @@ def tab1Content():
 
     with col2:
         # Select hoe type and store it in session state using on_change
+        st.session_state.hoeType="Netherite"
+        st.session_state.sowingLevel="None"
+        st.session_state.yieldingLevel="None"
         hoeType = st.selectbox(
             "Select Hoe Type:", 
             list(hoeTypes.keys()), 
