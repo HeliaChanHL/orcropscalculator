@@ -41,3 +41,21 @@ if st.session_state.calc:
     tab1Content()
 else:
     tab2Content()
+st.write("")
+st.write("")
+st.write("")
+st.markdown("""
+---
+""")
+footer_container = st.container()
+with footer_container:
+    col1, col2, col3 = st.columns((3, 2, 1))
+    
+    with col1:
+        st.write("Built by McSwagical (contact if issues occur.)")
+    
+    with col2:
+        st.write("Copyright © Amelia Freeman")
+    
+    with col3:
+        st.markdown("[Join OR-Finishes Discord](https://discord.gg/or-finishes)")

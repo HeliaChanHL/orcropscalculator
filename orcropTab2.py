@@ -6,8 +6,14 @@ def tab1Content():
     container1.header("Tool Configuration:")
     col1, col2 = container1.columns([1, 3])
     with col1:
+        st.write("")
+        st.write("")
         st.write("Harvesting Hoe Type:")
+        st.write("")
+        st.write("")
         st.write("Sowing Level:")
+        st.write("")
+        st.write("")
         st.write("Yielding Level:")
 
     with col2:
