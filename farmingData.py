@@ -25,6 +25,40 @@ cropChance = {
 
 
 tab1Text = """
+### Welcome to the OR Farming Calculator!
+#### 1. Tool Configuration
+- **Harvesting Hoe Type**: 
+  - Select the type of hoe you want to use from the dropdown menu. This choice affects your crop yield.
+  
+- **Sowing Level**: 
+  - Choose a level from the dropdown menu that indicates how well you can plant your crops. Higher levels can lead to better results.
+  
+- **Yielding Level**: 
+  - Pick a level that shows how much you can expect to harvest. Again, higher levels are better.
+
+#### 2. Crop Configuration
+- **Select Crops**: 
+  - In the left column, you’ll see a list of crops available. Check the boxes next to the crops you want to grow.
+  
+- **Planter Setup**: 
+  - For each crop you selected:
+    - Click on the crop's tab to access its settings.
+    - Inside that tab, you'll see options for different types of planters.
+      - **Number of Planters**: Enter how many setups of that planter you want to use for the selected crop.
+      - **Soil Setups**: Specify how many of the planter setups will **contain soil**. This indicates the number of setups that are using soil.
+      - **Fertilizer Setups**: Indicate how many of the planter setups will **contain fertilizer**. This shows the number of setups that are using fertilizer.
+
+#### 3. Miscellaneous
+- **Harvests**: 
+  - Enter the number of seeds you plan to plant in each planter. This can be between 1 and 64 seeds.
+  
+- **Calculate Costs and Supplies**: 
+  - You can choose to calculate the costs and supplies needed for planters and sprinklers by checking the boxes at the bottom.
+
+#### Once you have filled out all the necessary information, you can proceed with the calculations or actions related to your crop planning!
+
+---
+
 ### Explanation of Calculations
 
 #### Cost Calculation

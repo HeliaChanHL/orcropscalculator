@@ -23,7 +23,7 @@ def set_active_tab(tab_name):
     st.session_state.calc = not st.session_state.calc
 
 # Function to show the dialog with crop information
-@st.dialog("How to Use")
+@st.dialog("How to Use the OR Farming Calculator")
 def show_crop_dialog():
     modalContent() 
 

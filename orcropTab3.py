@@ -56,7 +56,7 @@ def incomeOverview(results,results2):
         colors = ['#8CD9C2', '#D88C8C', '#D1D54D']
 
         for category, color in zip(['totalIncome', 'totalCosts', 'totalProfits'], colors):
-            fig.add_trace(go.Bar(name=category, x=results2["Crops"], y=results2[category], marker=dict(color=color)))
+            fig.add_trace(go.Bar(name=category[5:], x=results2["Crops"], y=results2[category], marker=dict(color=color)))
 
         fig.update_layout(title='Financial Overview per Crop', barmode='group', 
                           xaxis_title='Crops', yaxis_title='Amount (in Rubies)', 
@@ -66,7 +66,7 @@ def incomeOverview(results,results2):
         fig = go.Figure()
         colors = ['#8CD9C2', '#D88C8C', '#D1D54D']
         for category, color in zip(['totalIncome', 'totalCosts', 'totalProfits'], colors):
-            fig.add_trace(go.Bar(name=category, x=results["Crops"], y=results[category], marker=dict(color=color)))
+            fig.add_trace(go.Bar(name=category[5:], x=results["Crops"], y=results[category], marker=dict(color=color)))
 
         fig.update_layout(title='Financial Overview per Crop Planter Type', barmode='group', 
                           xaxis_title='Crops', yaxis_title='Amount (in Rubies)', 
