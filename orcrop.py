@@ -14,6 +14,8 @@ custom_css = """
 }
 </style>
 """
+st.markdown('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">', unsafe_allow_html=True)
+
 st.markdown(custom_css, unsafe_allow_html=True)
 
 if 'calc' not in st.session_state:
@@ -60,5 +62,30 @@ with footer_container:
     
     with col3:
 
-        st.markdown("[Join OR-Finishes Discord](https://discord.gg/or-finishes)")
+        st.markdown("""
+            <style>
+                .discord-button {
+                    display: inline-block;
+                    background-color: #5865F2;
+                    color: white;
+                    padding: 10px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    font-family: Arial, sans-serif;
+                    transition: background-color 0.3s;
+                }
+                .discord-button:hover {
+                    background-color: #3E20C4;  /* Change this to your desired hover color */
+                }
+            </style>
+            <a href="https://discord.gg/or-finishes">
+                <button target="_blank" class="discord-button">
+                    <i class='fa-brands fa-discord'></i> <b>ORF</b>
+                </button>
+            </a>
+                    
+        """, unsafe_allow_html=True)
+
 
