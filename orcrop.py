@@ -55,7 +55,37 @@ with footer_container:
     col1, col2, col3 = st.columns((3, 2, 1))
     
     with col1:
-        st.write("Built by McSwagical (contact if issues occur.)")
+         st.markdown("""
+            <style>
+                .kofi-button {
+                    display: inline-block;
+                    background-color: #FFDBBB;
+                    color: #e55300;
+                    width: 100%;
+                    padding: 10px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    border: 2px solid #e55300;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    font-family: Arial, sans-serif;
+                    transition: background-color 0.3s, color 0.3s;
+                }
+
+                .kofi-button:hover {
+                    background-color: #FF5C00;
+                    color: white;
+                    border: 2px solid #FFDBBB;
+                }
+            </style>
+            <a href="https://ko-fi.com/mcswagical">
+                <button target="_blank" class="kofi-button">
+                    <i class="fa fa-coffee"></i> Built by McSwagical (ko-fi) <i class="fa fa-coffee"></i>
+                </button>
+            </a>
+                    
+        """, unsafe_allow_html=True)
+    
     
     with col2:
         st.write("Copyright © Amelia Freeman")
@@ -87,5 +117,6 @@ with footer_container:
             </a>
                     
         """, unsafe_allow_html=True)
+
 
 
